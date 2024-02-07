@@ -96,6 +96,7 @@ Workspaces provisioned by Coder in Kubernetes are container environments in a po
 - Envbox*
 - Rootless podman*
 - Privileged docker sidecar*
+
 *All of these methods either will make you create a privileged pod inside your cluster or have some privileged wrapper around your workspace (except rootless podman). Limitations of using rootless podman is out of scope for this documentation.
 
 I created this template to extend Coder's functionality to provision VMs on existing Kubernetes clusters. KVM machines being used as coder workspaces unlocks these functionalities:

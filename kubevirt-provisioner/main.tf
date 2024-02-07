@@ -209,38 +209,12 @@ resource "kubernetes_secret" "cloudinit-secret" {
     namespace = var.namespace
   }
   data = {
-    userdata = <<EOT
-Content-Type: multipart/mixed; boundary="//"
-MIME-Version: 1.0
-
---//
-Content-Type: text/cloud-config; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment; filename="cloud-config.txt"
-
-#cloud-config
-hostname: ${lower(data.coder_workspace.me.name)}
-users:
-- name: ${lower(data.coder_parameter.linux_user.value)}
-  passwd: $y$j9T$7rB9aUNSRJTEzm8t7qjdd1$klhw8gB81nd.6Q/T2EXu/bgiMjxPRWSHf1u8ZXloYf3
-  lock_passwd: false
-  sudo: ALL=(ALL) NOPASSWD:ALL
-  shell: /bin/bash
-cloud_final_modules:
-- [scripts-user, always]
-
---//
-Content-Type: text/x-shellscript; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment; filename="userdata.txt"
-
-#!/bin/bash
-export CODER_AGENT_TOKEN=${try(coder_agent.dev[0].token, "")}
-sudo --preserve-env=CODER_AGENT_TOKEN -u ${lower(data.coder_parameter.linux_user.value)} /bin/bash -c '${try(coder_agent.dev[0].init_script, "")}' > /var/log/coder_agent.log 2>&1
---//--
-EOT
+    userdata = templatefile("cloud-config.yaml.tftpl", {
+      hostname = lower(data.coder_workspace.me.name)
+      username = lower(data.coder_parameter.linux_user.value)
+      init_script = base64encode(try(coder_agent.dev[0].init_script, ""))
+      coder_agent_token = try(coder_agent.dev[0].token, "")
+    })
   }
 }
 

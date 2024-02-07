@@ -1,0 +1,44 @@
+#cloud-config
+hostname: ${hostname}
+users:
+  - name: ${username}
+    passwd: $y$j9T$7rB9aUNSRJTEzm8t7qjdd1$klhw8gB81nd.6Q/T2EXu/bgiMjxPRWSHf1u8ZXloYf3
+    lock_passwd: false
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    groups: sudo
+    shell: /bin/bash
+packages:
+  - git
+write_files:
+  - path: /opt/coder/init
+    permissions: "0755"
+    encoding: b64
+    content: ${init_script}
+  - path: /etc/systemd/system/coder-agent.service
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=Coder Agent
+      After=network-online.target
+      Wants=network-online.target
+
+      [Service]
+      User=${username}
+      ExecStart=/opt/coder/init
+      EnvironmentFile=/var/run/secrets/.coder-agent-token
+      Restart=always
+      RestartSec=10
+      TimeoutStopSec=90
+      KillMode=process
+
+      OOMScoreAdjust=-900
+      SyslogIdentifier=coder-agent
+
+      [Install]
+      WantedBy=multi-user.target
+bootcmd:
+  - mkdir -p /var/run/secrets
+  - echo CODER_AGENT_TOKEN=${coder_agent_token} > /var/run/secrets/.coder-agent-token
+runcmd:
+  - systemctl enable coder-agent
+  - systemctl start coder-agent

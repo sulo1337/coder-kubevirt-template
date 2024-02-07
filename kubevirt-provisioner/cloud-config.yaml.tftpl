@@ -1,5 +1,7 @@
 #cloud-config
+local-hostname: ${hostname}
 hostname: ${hostname}
+fqdn: ${hostname}.coder.company
 users:
   - name: ${username}
     passwd: $y$j9T$7rB9aUNSRJTEzm8t7qjdd1$klhw8gB81nd.6Q/T2EXu/bgiMjxPRWSHf1u8ZXloYf3

@@ -52,7 +52,7 @@ data "coder_parameter" "os_image" {
     mutable = false
     option {
         name = "Ubuntu 22.04"
-        value = "https://cloud-images.ubuntu.com/jammy/20240131/jammy-server-cloudimg-amd64-disk-kvm.img"
+        value = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64-disk-kvm.img"
         icon = "/icon/ubuntu.svg"
     }
     option {

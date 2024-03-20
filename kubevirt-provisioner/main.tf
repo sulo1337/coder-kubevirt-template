@@ -48,7 +48,7 @@ data "coder_parameter" "os_image" {
     name = "os_image"
     display_name = "OS Image"
     description = "OS Image type should your workspace use?"
-    default = "https://cloud-images.ubuntu.com/jammy/20240131/jammy-server-cloudimg-amd64-disk-kvm.img"
+    default = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64-disk-kvm.img"
     mutable = false
     option {
         name = "Ubuntu 22.04"
@@ -62,27 +62,27 @@ data "coder_parameter" "os_image" {
     }
     option {
         name = "Debian 12"
-        value = "https://cloud.debian.org/images/cloud/bookworm/20240201-1644/debian-12-genericcloud-amd64-20240201-1644.qcow2"
+        value = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
         icon = "/icon/debian.svg"
     }
     option {
         name = "Arch Linux"
-        value = "https://geo.mirror.pkgbuild.com/images/v20240201.210938/Arch-Linux-x86_64-cloudimg.qcow2"
+        value = "https://geo.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-cloudimg.qcow2"
         icon = "https://cdn0.iconfinder.com/data/icons/flat-round-system/512/archlinux-512.png"
     }
     option {
         name = "AlmaLinux 9"
-        value = "https://repo.almalinux.org/almalinux/9/cloud/x86_64/images/AlmaLinux-9-GenericCloud-9.3-20231113.x86_64.qcow2"
+        value = "https://repo.almalinux.org/almalinux/9/cloud/x86_64/images/AlmaLinux-9-GenericCloud-latest.x86_64.qcow2"
         icon = "/icon/almalinux.svg"
     }
     option {
         name = "CentOS Stream 9"
-        value = "https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-9-20240129.0.x86_64.qcow2"
+        value = "https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-9-latest.x86_64.qcow2"
         icon = "/icon/centos.svg"
     }
     option {
         name = "Rocky Linux 9"
-        value = "https://download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base-9.3-20231113.0.x86_64.qcow2"
+        value = "https://download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2"
         icon = "/icon/rockylinux.svg"
     }
 }

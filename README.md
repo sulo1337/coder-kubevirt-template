@@ -29,8 +29,14 @@ In both cases, the service-account/user(in the kubeconfig) should have bindings 
 | clusterrole 	| kubevirt.io          	| virtualmachines           	| *                	| -                                              	|
 | clusterrole 	| cdi.kubevirt.io      	| datavolumes               	| *                	| -                                              	|
 | role        	| ""                   	| secrets                   	| *                	| namespace where workspace VMs will be deployed 	|
+| role        	| ""                   	| services                   	| *                	| namespace where workspace VMs will be deployed 	|
 
 Permission to access secret in the namespace where VMs are deployed is required to store cloud-init configs. This secret is then mount to workspace VMs as a cloud-init drive. Kubevirt only supports 2048 byte cloud-init config if set as string. To overcome this limit, Kubernetes secrets are used.
+
+Permission to access service in the namespace where VMs are deployed is required to add DNS entry of VMs in the Kubernetes cluster. This way a VM created by this template can be accessed by another VM in the same cluster very easily. This can be done without DNS entry, and service as well, by referring to the "pod" IP address of the VM directly. This template runs VM network in `masquerade` mode. This means that the network VM will be is different than the k8s pod network. Network traffic is NAT'ed from VM network to pod network in `masquerade` mode. The VMs won't be accessible from other VMs by using the internal VM IP address. One has to use the "pod" IP address to access the VM. Since getting the pod IP address can only be done by someone who has access to the cluster, DNS entry is added to the k8s cluster instead. This way, anyone who uses coder and does not have access to the underlying k8s cluster will be able to access other VMs.
+
+VMs created by this template can be accessed in the following format:
+`coder-<owner>-<workspace-name>.<namespace>.svc.cluster.local`
 
 ## Features
 

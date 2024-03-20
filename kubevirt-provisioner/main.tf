@@ -335,3 +335,21 @@ resource "kubernetes_manifest" "datavolume" {
   }
 }
 
+# expose the vm via kubernetes service
+# exposed in the following format coder-<owner>-<workspace-name>.<namespace>.svc.cluster.local
+resource "kubernetes_manifest" "service" {
+  manifest = {
+    "apiVersion" = "v1"
+    "kind" = "Service"
+    "metadata" = {
+      "name"      = "coder-${data.coder_workspace.me.owner}-${data.coder_workspace.me.name}"
+      "namespace" = "${var.namespace}"
+    }
+    "spec" = {
+      "clusterIP" = "None"
+      "selector" = {
+        "kubevirt.io/vm" = "coder-${data.coder_workspace.me.owner}-${data.coder_workspace.me.name}"
+      }
+    }
+  }
+}
